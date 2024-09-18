@@ -16,6 +16,14 @@ function App() {
     setNewTodo('');
   };
 
+  const deleteTodo = (id) => {
+    axios.delete(`http://localhost:3001/todos/${id}`)
+      .then(() => {
+        setTodos(todos.filter(todo => todo._id !== id));
+      })
+      .catch(error => console.error('Error deleting todo:', error));
+  };
+
   return (
     <div>
       <h1>To-Do List</h1>
@@ -27,7 +35,10 @@ function App() {
       <button onClick={addTodo}>Add</button>
       <ul>
         {todos.map(todo => (
-          <li key={todo._id}>{todo.text}</li>
+          <li key={todo._id}>
+            {todo.text}
+            <button onClick={() => deleteTodo(todo._id)}>Delete</button>
+          </li>
         ))}
       </ul>
     </div>
